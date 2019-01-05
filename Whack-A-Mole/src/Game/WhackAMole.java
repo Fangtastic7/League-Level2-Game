@@ -19,6 +19,7 @@ public WhackAMole() {
 
 frame = new JFrame("Whack A Mole");
 panel = new GamePanel();
+
 }
 
 private void createUI() {
