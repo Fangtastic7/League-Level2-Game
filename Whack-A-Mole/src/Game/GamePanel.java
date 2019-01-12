@@ -22,15 +22,30 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener{
 	final int INSTRUCTIONS_STATE = 3;
 	final int GAME_STATE = 4;
 	final int END_STATE = 5;
-	int CURRENT_STATE = MENU_STATE;
+	int CURRENT_STATE = GAME_STATE;
 	Font titlefont;
 	Font text;
 	Image outsideImg;
-	Image moleImg;
+	static Image moleImg;
+	ObjectManager manager;
+	Holes hole1;
+	Holes hole2;
+	Holes hole3;
+	Holes hole4;
+	Holes hole5;
+	Holes hole6;
+	Hammer hammer;
 	public GamePanel() {
 	timer = new Timer(1000/60, this);
 	titlefont = new Font("Times New Roman", Font.BOLD, 48);
 	text = new Font("Arial", Font.BOLD, 25);
+	hole1 = new Holes(188, 400, 145, 90);
+	hole2 = new Holes(340, 450, 145, 90);
+	hole3 = new Holes(325, 555, 145, 90);
+	hole4 = new Holes(188, 620, 145, 90);
+	hole5 = new Holes(44, 550, 145, 90);
+	hole6 = new Holes(25, 445, 145, 90);
+	manager = new ObjectManager(hole1, hole2, hole3, hole4, hole5, hole6, hammer);
 	try {
 
         outsideImg = ImageIO.read(this.getClass().getResourceAsStream("outside.png"));
@@ -85,6 +100,7 @@ void drawInstructionsState(Graphics g) {
 }
 void drawGameState(Graphics g) {
 	g.drawImage(outsideImg, 0,0,500, 800,null);
+	manager.draw(g);
 }
 void drawEndState(Graphics g) {
 	g.setColor(Color.BLACK);
