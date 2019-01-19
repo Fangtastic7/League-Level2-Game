@@ -1,35 +1,50 @@
 package Game;
 
 import java.awt.Graphics;
+import java.util.Random;
+
+import javax.swing.Timer;
 
 public class ObjectManager {
-	Holes hole1;
-	Holes hole2;
-	Holes hole3;
-	Holes hole4;
-	Holes hole5;
-	Holes hole6;
+
+	Hole[] holes = new Hole[6];
 	Hammer hammer;
-public ObjectManager(Holes hole1, Holes hole2, Holes hole3, Holes hole4, Holes hole5, Holes hole6, Hammer hammer) {
-this.hole1 = hole1;
-this.hole2 = hole2;
-this.hole3 = hole3;
-this.hole4 = hole4;
-this.hole5 = hole5;
-this.hole6 = hole6;
-this.hammer = hammer;
-	
-}
-void draw(Graphics g) {
-	hole1.draw(g);
-	hole2.draw(g);
-	hole3.draw(g);
-	hole4.draw(g);
-	hole5.draw(g);
-	hole6.draw(g);
-}
-int getscore(int score) {
-	
-	return score;
-}
+	Timer timer;
+	GamePanel score;
+	int mole;
+	Random random = new Random();
+
+	public ObjectManager() {
+		mole = random.nextInt(6);
+		holes[0] = new Hole(188, 400, 145, 90);
+		holes[1] = new Hole(340, 450, 145, 90);
+		holes[2] = new Hole(325, 555, 145, 90);
+		holes[3] = new Hole(188, 620, 145, 90);
+		holes[4] = new Hole(44, 550, 145, 90);
+		holes[5] = new Hole(25, 445, 145, 90);
+
+	}
+
+	void draw(Graphics g) {
+		holes[mole].draw(g);
+	}
+
+	void getNextMole() {
+		mole = random.nextInt(6);
+
+	}
+
+	void purgeObjects() {
+
+	}
+
+	void checkCollisions() {
+
+	}
+
+	int getscore(int score) {
+
+		return score;
+	}
+
 }

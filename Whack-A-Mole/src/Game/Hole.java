@@ -5,10 +5,10 @@ import java.awt.Graphics;
 
 import org.w3c.dom.css.Rect;
 
-public class Holes extends GameObject {
+public class Hole extends GameObject {
 
 	
-public Holes(int x, int y, int width, int height) {
+public Hole(int x, int y, int width, int height) {
 	super(x, y, width, height);
 	
 }
