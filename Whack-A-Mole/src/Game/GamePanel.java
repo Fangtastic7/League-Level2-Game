@@ -16,6 +16,8 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	Timer timer;
+	Timer moletimer;
+	int moledelay = 2000;
 	final int MENU_STATE = 0;
 	final int SETTINGS_STATE = 1;
 	final int CREDITS_STATE = 2;
@@ -30,13 +32,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	static Image moleImg;
 	ObjectManager manager;
 	Hammer hammer;
+	
 
 	public GamePanel() {
 		timer = new Timer(1000 / 60, this);
+		
 		titlefont = new Font("Times New Roman", Font.BOLD, 48);
 		text = new Font("Arial", Font.BOLD, 25);
 
 		manager = new ObjectManager();
+		moletimer = new Timer(moledelay, manager);
 		try {
 
 			outsideImg = ImageIO.read(this.getClass().getResourceAsStream("outside.png"));
@@ -57,8 +62,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	// }
 	void startGame() {
 		timer.start();
+		moletimer.start();
 		timer.addActionListener(this);
 		System.out.println("start");
+		moletimer.addActionListener(manager);
 	}
 
 	void drawMenuState(Graphics g) {
@@ -147,6 +154,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			CURRENT_STATE = SETTINGS_STATE;
 
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			System.out.println("enter");
 			CURRENT_STATE = GAME_STATE;
 		} else if (e.getKeyCode() == KeyEvent.VK_C) {
 			CURRENT_STATE = CREDITS_STATE;
@@ -159,12 +167,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			startGame();
 
 		}
-		if (manager.holes == keyPressed) {
-			score = score + 1;
-			System.out.println(score);
-			manager.getNextMole();
+		//if (manager.holes == keyPressed) {
+			//score = score + 1;
+			//System.out.println(score);
+			//manager.getNextMole();
 
-		}
+		//}
 	}
 
 	@Override

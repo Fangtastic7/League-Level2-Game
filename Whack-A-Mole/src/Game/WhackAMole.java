@@ -32,5 +32,6 @@ private void createUI() {
 	frame.getContentPane().setPreferredSize(new Dimension(width, height));
 	frame.pack();
 	frame.addKeyListener(panel);
+	panel.startGame();
 }
 }
