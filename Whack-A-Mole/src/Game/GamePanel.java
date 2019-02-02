@@ -8,13 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements ActionListener, KeyListener {
+public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener {
 	Timer timer;
 	Timer moletimer;
 	int moledelay = 2000;
@@ -32,11 +34,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	static Image moleImg;
 	ObjectManager manager;
 	Hammer hammer;
-	
+	Hole hole;
 
 	public GamePanel() {
 		timer = new Timer(1000 / 60, this);
-		
+
 		titlefont = new Font("Times New Roman", Font.BOLD, 48);
 		text = new Font("Arial", Font.BOLD, 25);
 
@@ -150,6 +152,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
 		Hole[] keyPressed = (Hole[]) e.getSource();
+
 		if (e.getKeyCode() == KeyEvent.VK_S) {
 			CURRENT_STATE = SETTINGS_STATE;
 
@@ -167,16 +170,51 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener {
 			startGame();
 
 		}
-		//if (manager.holes == keyPressed) {
-			//score = score + 1;
-			//System.out.println(score);
-			//manager.getNextMole();
 
-		//}
+		manager.getNextMole();
+
+	}
+
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		System.out.println("mouse_event ");
+		int mouseX = e.getX();
+		int mouseY = e.getY();
+		if (manager.checkCollisions(mouseX, mouseY)) {
+			score = score + 1;
+
+		}
+		// System.out.println(mouseX + ", " + mouseY);
+
+		System.out.println(score);
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
