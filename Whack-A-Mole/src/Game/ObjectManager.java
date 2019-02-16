@@ -23,6 +23,7 @@ public class ObjectManager implements ActionListener {
 
 	public ObjectManager() {
 		mole = random.nextInt(6);
+		
 		sign = random.nextInt(2);
 		holes[0] = new Hole(x = 188, y = 400, 145, 90);
 		holes[1] = new Hole(x = 340, y = 450, 145, 90);
@@ -35,6 +36,18 @@ public class ObjectManager implements ActionListener {
 
 	void draw(Graphics g) {
 
+		if(mole>-1) {
+		holes[mole].draw(g);
+		}
+		
+		
+		// System.out.println(mole + " is printed");
+		// mole = samemole;
+
+	}
+
+	void getNextMole() {
+		mole = random.nextInt(6);
 		/*
 		 * if(samemole == mole) { if(mole==5) { mole = mole - random.nextInt((4-1)+1); }
 		 * else if(mole==4) { if(sign==0) {
@@ -53,19 +66,11 @@ public class ObjectManager implements ActionListener {
 		 * 
 		 * }
 		 */
-		holes[mole].draw(g);
-		// System.out.println(mole + " is printed");
-		// mole = samemole;
-
-	}
-
-	void getNextMole() {
-		mole = random.nextInt(6);
-
+		System.out.println("mole location: " + mole);
 	}
 
 	void purgeObjects() {
-
+		mole =-1; 
 	}
 
 	boolean checkCollisions(int mouseX, int mouseY) {

@@ -31,6 +31,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	Font titlefont;
 	Font text;
 	Image outsideImg;
+	
 	static Image moleImg;
 	ObjectManager manager;
 	Hammer hammer;
@@ -43,7 +44,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		text = new Font("Arial", Font.BOLD, 25);
 
 		manager = new ObjectManager();
-		moletimer = new Timer(moledelay, manager);
+		moletimer = new Timer(moledelay, manager); 
+		hammer = new Hammer(250, 400, 200, 150);
+		addMouseMotionListener(hammer);
+	
 		try {
 
 			outsideImg = ImageIO.read(this.getClass().getResourceAsStream("outside.png"));
@@ -57,7 +61,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			e.printStackTrace();
 
 		}
-	}
+}
 	// public void paintComponent(Graphics g){
 	// g.fillRect(10, 10, 100, 100);
 
@@ -103,6 +107,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	void drawGameState(Graphics g) {
 		g.drawImage(outsideImg, 0, 0, 500, 800, null);
 		manager.draw(g);
+		hammer.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
@@ -183,22 +188,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		System.out.println("mouse_event ");
+		//hammer.hammerdown = true;
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 		if (manager.checkCollisions(mouseX, mouseY)) {
+			manager.purgeObjects();
+			
 			score = score + 1;
 
 		}
 		// System.out.println(mouseX + ", " + mouseY);
 
-		System.out.println(score);
+		System.out.println("score = " + score);
 	}
 
 	@Override
