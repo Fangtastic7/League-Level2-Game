@@ -66,7 +66,7 @@ public class ObjectManager implements ActionListener {
 		 * 
 		 * }
 		 */
-		System.out.println("mole location: " + mole);
+		//System.out.println("mole location: " + mole);
 	}
 
 	void purgeObjects() {
@@ -77,6 +77,7 @@ public class ObjectManager implements ActionListener {
 		for (int i = 0; i < holes.length; i++) {
 			if (holes[i].checkcollision(mouseX, mouseY)) {
 				if (i == mole) {
+					System.out.println("mole smashed");
 					return true;
 
 				}

@@ -12,7 +12,7 @@ public class WhackAMole {
 	JFrame frame;
 	GamePanel panel;
 	JLabel timer;
-
+	
 	public static void main(String[] args) {
 		new WhackAMole().createUI();
 	}
@@ -21,7 +21,7 @@ public class WhackAMole {
 
 		frame = new JFrame("Whack A Mole");
 		panel = new GamePanel();
-
+		timer = new JLabel();
 	}
 
 	private void createUI() {
@@ -33,8 +33,13 @@ public class WhackAMole {
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.getContentPane().setPreferredSize(new Dimension(width, height));
 		frame.pack();
+		timer.setLocation(100, 50);
+		timer.setText("Time: " );
+		timer.setSize(200,  100);
+		frame.add(timer);
 		frame.addKeyListener(panel);
 		frame.addMouseListener(panel);
+		frame.addMouseMotionListener(panel);
 		panel.startGame();
 	}
 }
