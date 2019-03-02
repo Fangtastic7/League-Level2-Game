@@ -25,14 +25,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	int moledelay = 2000;
 	final int MENU_STATE = 0;
 	final int SETTINGS_STATE = 1;
-	final int CREDITS_STATE = 2;
-	final int INSTRUCTIONS_STATE = 3;
-	final int GAME_STATE = 4;
-	final int END_STATE = 5;
-	int CURRENT_STATE = GAME_STATE;
-	int score = 0;
-	int counter = 30;
-	int countrate = 120;
+	final int INSTRUCTIONS_STATE = 2;
+	final int GAME_STATE = 3;
+	final int END_STATE = 4;
+	int CURRENT_STATE = MENU_STATE;
+	int score ;
+	int counter;
+	int countrate;
 	Font titlefont;
 	Font text;
 	Image outsideImg;
@@ -70,6 +69,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	// g.fillRect(10, 10, 100, 100);
 
 	// }
+	
+	void initializeGame(){
+	CURRENT_STATE = GAME_STATE;
+	 score = 0 ;
+	 counter = 30;
+	 countrate = 120;
+	}
+	
 	void startGame() {
 		timer.start();
 		moletimer.start();
@@ -95,15 +102,14 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawImage(outsideImg, 0, 0, 500, 800, null);
 		g.setFont(titlefont);
 		g.setColor(Color.BLACK);
-		g.drawString("Settings", 80, 200);
+		g.drawString("Settings", 160, 200);
 		g.setFont(text);
 		g.setColor(Color.BLUE);
 		g.drawString("Music", 20, 270);
+		
 	}
 
-	void drawCreditsState(Graphics g) {
-		g.drawImage(outsideImg, 0, 0, 500, 800, null);
-	}
+	
 
 	void drawInstructionsState(Graphics g) {
 		g.drawImage(outsideImg, 0, 0, 500, 800, null);
@@ -111,19 +117,38 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	void drawGameState(Graphics g) {
 		g.drawImage(outsideImg, 0, 0, 500, 800, null);
+		g.setColor(Color.WHITE);
 		
+		g.drawRect(180, 3, 300, 30);
+		g.setColor(Color.BLUE);
+		g.setFont(text);
+		g.drawString("Timer: " + counter, 200, 30);
+		g.drawString("Score: " + score, 350, 30);
 		manager.draw(g);
 		hammer.draw(g);
 	}
 
 	void drawEndState(Graphics g) {
 		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, 500, 800);
+		g.setColor(Color.WHITE);
+		g.setFont(titlefont);
+		g.drawString("Game Over", 110, 200);
+		g.setFont(text);
+		g.drawString("You bonked " + score + " moles", 115, 350);
+		g.drawString("Your rate: " + score/30 + " moles per second", 80, 425);
+		g.drawString("Press Enter to restart", 110, 500);
+		g.drawString("Press Esc to return to Main Menu", 60, 600);
+		
 	}
 
 	@Override
 
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
+		if(CURRENT_STATE == GAME_STATE) {
+			
+		
 		if(countrate==0) {
 			counter--;
 			countrate=120;
@@ -136,6 +161,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		else {
 			countrate--;
 			
+		}
 		}
 		repaint();
 		
@@ -153,16 +179,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			drawMenuState(g);
 
 		} else if (CURRENT_STATE == GAME_STATE) {
-
+			
 			drawGameState(g);
 
 		} else if (CURRENT_STATE == INSTRUCTIONS_STATE) {
 
 			drawInstructionsState(g);
 
-		} else if (CURRENT_STATE == CREDITS_STATE) {
+		} else if (CURRENT_STATE == SETTINGS_STATE) {
 
-			drawCreditsState(g);
+			drawSettingsState(g);
 
 		} else if (CURRENT_STATE == END_STATE) {
 
@@ -183,22 +209,25 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		System.out.println("keyPressed ");
 
 		if (e.getKeyCode() == KeyEvent.VK_S) {
-			CURRENT_STATE = SETTINGS_STATE;
-
+			if(CURRENT_STATE != GAME_STATE) {
+				CURRENT_STATE = SETTINGS_STATE;
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 			System.out.println("enter");
-			CURRENT_STATE = GAME_STATE;
-		} else if (e.getKeyCode() == KeyEvent.VK_C) {
-			CURRENT_STATE = CREDITS_STATE;
-
+			if(CURRENT_STATE != GAME_STATE ) {
+			initializeGame();
+			}
 		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			CURRENT_STATE = MENU_STATE;
+			if(CURRENT_STATE != GAME_STATE) {
+				CURRENT_STATE = MENU_STATE;
+			}
+			
 		}
 
-		if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-			startGame();
+		//if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+		//	startGame();
 
-		}
+		//}
 
 		manager.getNextMole();
 
