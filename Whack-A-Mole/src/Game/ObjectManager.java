@@ -98,7 +98,7 @@ public class ObjectManager implements ActionListener {
 		// TODO Auto-generated method stub
 		// System.out.println("moletimer");
 		getNextMole();
-
+		//System.out.println("Next Mole!");
 	}
 
 }
