@@ -26,7 +26,7 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener, KeyListener, MouseListener, MouseMotionListener {
 	Timer timer;
 	Timer moletimer;
-	int moledelay = 2000;
+	 int moledelay = 2000;
 	final int MENU_STATE = 0;
 	final int SETTINGS_STATE = 1;
 	final int INSTRUCTIONS_STATE = 2;
@@ -36,11 +36,13 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	int score;
 	Song song;
 	int counter;
+	double rate = 0;
 	int countrate;
 	Font titlefont;
 	Font text;
+	Font smalltext;
 	Image outsideImg;
-	Date time;
+	Date starttime;
 	Countdown countdown;
 	static Image moleImg;
 	ObjectManager manager;
@@ -51,11 +53,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		timer = new Timer(1000 / 60, this);
 		song = new Song();
 		titlefont = new Font("Times New Roman", Font.BOLD, 48);
+		smalltext = new Font("Times New Roman", Font.BOLD, 25);
 		text = new Font("Arial", Font.BOLD, 25);
 		manager = new ObjectManager();
 		moletimer = new Timer(moledelay, manager);
 		hammer = new Hammer(250, 400, 200, 150);
-		time = new Date();
 		try {
 
 			outsideImg = ImageIO.read(this.getClass().getResourceAsStream("outside.png"));
@@ -88,6 +90,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		timer.addActionListener(this);
 		System.out.println("start");
 		moletimer.addActionListener(manager);
+		starttime = new Date();
 
 	}
 
@@ -100,7 +103,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 		g.drawString("Click Enter to Play!", 120, 270);
 		g.drawString("Settings - Click 's'", 125, 340);
-		g.drawString("Instructions - click 'c'", 135, 410);
+		g.drawString("Instructions - click 'c'", 125, 410);
 	}
 
 	void drawSettingsState(Graphics g) {
@@ -130,6 +133,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	void drawInstructionsState(Graphics g) {
 		g.drawImage(outsideImg, 0, 0, 500, 800, null);
+		g.setFont(titlefont);
+		g.setColor(Color.BLACK);
+		g.drawString("Instructions", 135, 200);
+		g.setFont(text);
+		g.setColor(Color.blue);
+		g.drawString("How to Play:", 20, 270);
+		g.setColor(Color.BLACK);
+		g.setFont(smalltext);
+		g.drawString("1) Smash as many moles within 30 seconds.", 20, 300);
+		g.drawString("2) You can adjust the speed and the music", 20, 330);
+		g.drawString("by going in to settings.", 20, 360);
+		g.drawString("3) Good Luck and Have Fun!", 20, 390);
+		g.setColor(Color.RED);
+		g.setFont(text);
 		g.drawString("Click 'Esc' to return to Main Menu", 50, 750);
 	}
 
@@ -154,10 +171,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("Game Over", 110, 200);
 		g.setFont(text);
 		g.drawString("You bonked " + score + " moles", 115, 350);
-		//g.drawString("Your rate: " + score / 30 + " moles per second", 80, 425);
+		g.drawString("Your rate: " + rate + " moles per second", 80, 425);
 		g.drawString("Press Enter to restart", 110, 500);
 		g.drawString("Press Esc to return to Main Menu", 60, 600);
-		endGame(time, score);
+		
 	}
 
 	@Override
@@ -171,21 +188,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				countrate = 120;
 				System.out.println(counter);
 			} else if (counter == 0) {
+				molerate();
 				CURRENT_STATE = END_STATE;
 
 			} else {
 				countrate--;
-
+				
 			}
 		}
 		repaint();
 
 	}
 
-	private void endGame(Date timeAtStart, int molesWhacked) {
+	double molerate( ) {
 		Date timeAtEnd = new Date();
-		JOptionPane.showMessageDialog(null, "Your whack rate is "
-				+ ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked) + " moles per second.");
+		
+		rate =  ( (timeAtEnd.getTime() - starttime.getTime()) / 1000 / score);
+		
+		//JOptionPane.showMessageDialog(null, "Your whack rate is "
+				//+ ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked) + " moles per second.");
+		return rate;
 	}
 
 	public void paintComponent(Graphics g) {
@@ -249,19 +271,26 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_3) {
 					song.stop();
-					song.playMusicOnComputer("src/Game/monstsercat.mp3");
+					song.playMusicOnComputer("src/Game/monstercat.mp3");
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_4) {
+					song.playMusicOnComputer(null);
 					song.stop();
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_5) {
 					moledelay = 2000;
+					moletimer.setDelay(2000);
+					System.out.println(moledelay);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_6) {
 					moledelay = 1000;
+					moletimer.setDelay(1000);
+					System.out.println(moledelay);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_7) {
 					moledelay = 500;
+					moletimer.setDelay(500);
+					System.out.println(moledelay);
 				}
 			}
 		}
