@@ -34,9 +34,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	final int END_STATE = 4;
 	int CURRENT_STATE = MENU_STATE;
 	int score;
-	Song song;
+	Song rock;
+	Song rap;
+	Song electro;
+	Song whack;
 	int counter;
-	double rate = 0;
+	float rate = 0;
 	int countrate;
 	Font titlefont;
 	Font text;
@@ -51,7 +54,10 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	public GamePanel() {
 		timer = new Timer(1000 / 60, this);
-		song = new Song();
+		rock = new Song("queen.mp3");
+		rap = new Song("drake.mp3");
+		electro = new Song("electro.mp3");
+		whack = new Song("whack.mp3");
 		titlefont = new Font("Times New Roman", Font.BOLD, 48);
 		smalltext = new Font("Times New Roman", Font.BOLD, 25);
 		text = new Font("Arial", Font.BOLD, 25);
@@ -171,7 +177,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.drawString("Game Over", 110, 200);
 		g.setFont(text);
 		g.drawString("You bonked " + score + " moles", 115, 350);
-		g.drawString("Your rate: " + rate + " moles per second", 80, 425);
+		g.drawString("Your rate: " + String.format("%1.2f", rate) + " moles per second", 80, 425);
 		g.drawString("Press Enter to restart", 110, 500);
 		g.drawString("Press Esc to return to Main Menu", 60, 600);
 		
@@ -200,10 +206,12 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	}
 
-	double molerate( ) {
+	float molerate( ) {
 		Date timeAtEnd = new Date();
-		
-		rate =  ( (timeAtEnd.getTime() - starttime.getTime()) / 1000 / score);
+		//change
+		float time = 0;
+		time =  (  ((timeAtEnd.getTime() - starttime.getTime()) / 1000));
+		rate = ( score / 30);
 		
 		//JOptionPane.showMessageDialog(null, "Your whack rate is "
 				//+ ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked) + " moles per second.");
@@ -244,7 +252,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		System.out.println("keyPressed ");
+	//	System.out.println("keyPressed ");
 
 		if (CURRENT_STATE != GAME_STATE) {
 			if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -262,20 +270,34 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			}
 			else if(CURRENT_STATE == SETTINGS_STATE) {
 				if(e.getKeyCode() == KeyEvent.VK_1) {
-					song.stop();
-					song.playMusicOnComputer("src/Game/queen.mp3");
+					
+					rock.stop();
+					rap.stop();
+					electro.stop();
+					rock.play();
+					
+	
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_2) {
-					song.stop();
-					song.playMusicOnComputer("src/Game/drake.mp3");
+					rock.stop();
+					rap.stop();
+					electro.stop();
+					rap.play();
+					
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_3) {
-					song.stop();
-					song.playMusicOnComputer("src/Game/monstercat.mp3");
+					rock.stop();
+					rap.stop();
+					electro.stop();
+					electro.play();
+					
+							
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_4) {
-					song.playMusicOnComputer(null);
-					song.stop();
+					rock.stop();
+					rap.stop();
+					electro.stop();
+					
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_5) {
 					moledelay = 2000;
@@ -300,7 +322,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 		// }
 
-		manager.getNextMole();
+	//	manager.getNextMole();
 
 	}
 
@@ -313,13 +335,20 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		// System.out.println("mouse_Clicked ");
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		// System.out.println("mouse_event ");
+		if(CURRENT_STATE == GAME_STATE) {
+		
+			whack.play();
+			
+		}
 		hammer.hammerdown = true;
+		
 		// hammer.hammerdown = true;
 		int mouseX = e.getX();
 		int mouseY = e.getY();
@@ -331,7 +360,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		}
 		// System.out.println(mouseX + ", " + mouseY);
 
-		System.out.println("score = " + score);
+	//	System.out.println("score = " + score);
 	}
 
 	@Override
