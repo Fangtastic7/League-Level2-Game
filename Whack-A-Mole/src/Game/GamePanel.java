@@ -33,13 +33,16 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	final int GAME_STATE = 3;
 	final int END_STATE = 4;
 	int CURRENT_STATE = MENU_STATE;
-	int score;
+	double score;
+	int printedscore = 0;
 	Song rock;
 	Song rap;
 	Song electro;
 	Song whack;
 	int counter;
-	float rate = 0;
+	double attempts = 0;
+	double totaltime = 30;
+	double rate = 0;
 	int countrate;
 	Font titlefont;
 	Font text;
@@ -86,6 +89,8 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 	void initializeGame() {
 		CURRENT_STATE = GAME_STATE;
 		score = 0;
+		printedscore = 0;
+		attempts = 0;
 		counter = 30;
 		countrate = 120;
 	}
@@ -94,7 +99,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		timer.start();
 		moletimer.start();
 		timer.addActionListener(this);
-		System.out.println("start");
+		//System.out.println("start");
 		moletimer.addActionListener(manager);
 		starttime = new Date();
 
@@ -164,7 +169,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.setColor(Color.BLUE);
 		g.setFont(text);
 		g.drawString("Timer: " + counter, 200, 30);
-		g.drawString("Score: " + score, 350, 30);
+		g.drawString("Score: " + printedscore, 350, 30);
 		manager.draw(g);
 		hammer.draw(g);
 	}
@@ -176,10 +181,11 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		g.setFont(titlefont);
 		g.drawString("Game Over", 110, 200);
 		g.setFont(text);
-		g.drawString("You bonked " + score + " moles", 115, 350);
-		g.drawString("Your rate: " + String.format("%1.2f", rate) + " moles per second", 80, 425);
-		g.drawString("Press Enter to restart", 110, 500);
-		g.drawString("Press Esc to return to Main Menu", 60, 600);
+		g.drawString("You bonked " + printedscore + " moles", 115, 350);
+		g.drawString("Your rate: " +  String.format("%1.2f",rate) + " moles per second", 60, 425);
+		g.drawString("Your accuracy: " + String.format("%1.2f", (score/attempts * 100)) + "%", 120, 500);
+		g.drawString("Press Enter to restart", 120, 575); 
+		g.drawString("Press Esc to return to Main Menu", 60, 650);
 		
 	}
 
@@ -192,7 +198,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			if (countrate == 0) {
 				counter--;
 				countrate = 120;
-				System.out.println(counter);
+				//System.out.println(counter);
 			} else if (counter == 0) {
 				molerate();
 				CURRENT_STATE = END_STATE;
@@ -206,12 +212,15 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 
 	}
 
-	float molerate( ) {
+	double molerate( ) {
 		Date timeAtEnd = new Date();
 		//change
 		float time = 0;
 		time =  (  ((timeAtEnd.getTime() - starttime.getTime()) / 1000));
-		rate = ( score / 30);
+		//System.out.println("Time- " + time);
+		//System.out.println("Score: " + score);
+		rate = ( score / totaltime);
+	//	System.out.println("Rate: " + rate);
 		
 		//JOptionPane.showMessageDialog(null, "Your whack rate is "
 				//+ ((timeAtEnd.getTime() - timeAtStart.getTime()) / 1000.00 / molesWhacked) + " moles per second.");
@@ -258,7 +267,7 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 			if (e.getKeyCode() == KeyEvent.VK_S) {
 				CURRENT_STATE = SETTINGS_STATE;
 			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-				System.out.println("enter");
+				//System.out.println("enter");
 				initializeGame();
 			} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				CURRENT_STATE = MENU_STATE;
@@ -302,17 +311,17 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 				else if(e.getKeyCode() == KeyEvent.VK_5) {
 					moledelay = 2000;
 					moletimer.setDelay(2000);
-					System.out.println(moledelay);
+					//System.out.println(moledelay);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_6) {
 					moledelay = 1000;
 					moletimer.setDelay(1000);
-					System.out.println(moledelay);
+					//System.out.println(moledelay);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_7) {
 					moledelay = 500;
 					moletimer.setDelay(500);
-					System.out.println(moledelay);
+					//System.out.println(moledelay);
 				}
 			}
 		}
@@ -345,28 +354,31 @@ public class GamePanel extends JPanel implements ActionListener, KeyListener, Mo
 		if(CURRENT_STATE == GAME_STATE) {
 		
 			whack.play();
-			
+			attempts = attempts + 1;
 		}
 		hammer.hammerdown = true;
 		
-		// hammer.hammerdown = true;
+	
 		int mouseX = e.getX();
 		int mouseY = e.getY();
 		if (manager.checkCollisions(mouseX, mouseY)) {
 			manager.purgeObjects();
 
 			score = score + 1;
+			printedscore = printedscore +1;
+			
 
 		}
-		// System.out.println(mouseX + ", " + mouseY);
+		
 
-	//	System.out.println("score = " + score);
+	
 	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		hammer.x = e.getX();
+		hammer.y = e.getY();
 	}
 
 	@Override

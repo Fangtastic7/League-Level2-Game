@@ -46,7 +46,8 @@ public class Hammer extends GameObject implements MouseMotionListener{
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+		x = e.getX();
+		y = e.getY();
 	}
 
 	@Override

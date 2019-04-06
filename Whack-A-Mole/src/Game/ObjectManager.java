@@ -77,7 +77,7 @@ public class ObjectManager implements ActionListener {
 		for (int i = 0; i < holes.length; i++) {
 			if (holes[i].checkcollision(mouseX, mouseY)) {
 				if (i == mole) {
-					System.out.println("mole smashed");
+				//	System.out.println("mole smashed");
 					return true;
 
 				}

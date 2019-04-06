@@ -30,6 +30,7 @@ public class WhackAMole {
 		frame.add(panel);
 		frame.setTitle("WhackAMole");
 		frame.setSize(width, height);
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
 		frame.getContentPane().setPreferredSize(new Dimension(width, height));
 		frame.pack();
